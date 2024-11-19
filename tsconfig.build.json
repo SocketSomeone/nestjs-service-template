@@ -4,15 +4,32 @@
 		"declaration": true,
 		"noImplicitAny": false,
 		"noUnusedLocals": false,
+		"resolveJsonModule": true,
+		"noUncheckedIndexedAccess": true,
 		"removeComments": false,
 		"noLib": false,
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
-		"target": "es6",
+		"target": "ES2022",
 		"sourceMap": false,
+		"baseUrl": ".",
 		"outDir": "./dist",
 		"rootDir": "./src",
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"paths": {
+			"@src/*": [
+				"src/*"
+			],
+			"@common/*": [
+				"src/common/*"
+			],
+			"@shared/*": [
+				"src/shared/*"
+			]
+		}
 	},
 	"include": [
 		"src/**/*"
