@@ -1,4 +1,4 @@
-FROM node:20-alpine as builder
+FROM node:20-alpine AS builder
 
 WORKDIR /sources
 
@@ -10,8 +10,25 @@ COPY . .
 
 RUN npm run build
 
-# Запуск в продакшн
-FROM node:20-alpine as production
+FROM node:20-alpine AS staging
+
+WORKDIR /app
+
+COPY --from=builder /sources/package.json /sources/yarn.lock ./
+COPY --from=builder /sources/tsconfig.json /sources/tsconfig.build.json ./
+COPY --from=builder /sources/nest-cli.json ./
+COPY --from=builder /sources/.swcrc ./
+COPY --from=builder /sources/dist ./dist
+
+ENV NODE_ENV=development
+
+RUN yarn install --frozen-lockfile
+
+EXPOSE 8080
+
+CMD ["node", "./dist/main.js"]
+
+FROM node:20-alpine AS production
 
 WORKDIR /app
 
