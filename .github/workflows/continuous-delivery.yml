@@ -9,7 +9,7 @@ concurrency:
 
 env:
     REGISTRY: ghcr.io
-    ORGANIZATION: ${{ github.actor }}
+    ORGANIZATION: socketsomeone
     REPOSITORY: ${{ github.repository }}
 
 jobs:
