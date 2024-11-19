@@ -21,6 +21,8 @@ async function bootstrap() {
 	const isDevelopment = NODE_ENV === 'development';
 	const isProduction = NODE_ENV === 'production';
 
+	const API_PREFIX = configService.get('API_PREFIX', 'api');
+
 	if (isProduction) {
 		// TODO: Wait for https://github.com/nestjs/nest/pull/14121
 		// app.useLogger(new ConsoleLogger({ json: true }));
@@ -30,7 +32,7 @@ async function bootstrap() {
 	app.set('trust proxy', true);
 	app.enableShutdownHooks();
 
-	app.setGlobalPrefix('api', { exclude: ['health'] });
+	app.setGlobalPrefix(API_PREFIX, { exclude: ['health'] });
 	app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector));
 	app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
@@ -42,6 +44,7 @@ async function bootstrap() {
 			.setDescription(description)
 			.setVersion(version)
 			.addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }, 'access-token')
+			.setBasePath(API_PREFIX)
 			.build();
 
 		const document = SwaggerModule.createDocument(app, config);
@@ -55,8 +58,9 @@ async function bootstrap() {
 	}
 
 	const port = configService.get('PORT', 3000);
-	await app.listen(port);
-	logger.log(`Server is running on http://localhost:${port}`);
+	await app.listen(port, () => {
+		logger.log(`Server is running on http://localhost:${port}`);
+	});
 }
 
 void bootstrap();
