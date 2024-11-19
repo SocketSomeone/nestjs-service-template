@@ -1,15 +1,12 @@
 .idea
+.git
 .vscode
 .github
 docs
-integration
 sample
-src
 test
 .commitlintrc.json
 .editorconfig
 .eslintrc
 .gitattributes
-tsconfig.json
-yarn.lock
 yarn-error.log
