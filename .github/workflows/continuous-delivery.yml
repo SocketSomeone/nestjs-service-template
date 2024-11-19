@@ -9,8 +9,7 @@ concurrency:
 
 env:
     REGISTRY: ghcr.io
-    ORGANIZATION: socketsomeone
-    SERVICE: my-service
+    IMAGE: ${{ github.repository }}
 
 jobs:
     build-and-push-image:
@@ -56,7 +55,7 @@ jobs:
               id: meta
               uses: docker/metadata-action@v4
               with:
-                  images: ${{ env.REGISTRY }}/${{ env.ORGANIZATION }}/${{ env.SERVICE }}
+                  images: ${{ env.REGISTRY }}/${{ env.IMAGE }}
 
             - name: Build and push
               uses: docker/build-push-action@v4
@@ -65,7 +64,7 @@ jobs:
                   file: ./Dockerfile
                   push: true
                   builder: ${{ steps.buildx.outputs.name }}
-                  tags: ${{ steps.meta.outputs.tags }}, ${{ env.REGISTRY }}/${{ env.ORGANIZATION }}/${{ env.SERVICE }}:${{ steps.environment.outputs.name }}
+                  tags: ${{ steps.meta.outputs.tags }}, ${{ env.REGISTRY }}/${{ env.IMAGE }}:${{ steps.environment.outputs.name }}
                   labels: ${{ steps.meta.outputs.labels }}
                   cache-from: type=local,src=/tmp/.buildx-cache
                   cache-to: type=local,dest=/tmp/.buildx-cache
