@@ -44,7 +44,6 @@ async function bootstrap() {
 			.setDescription(description)
 			.setVersion(version)
 			.addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }, 'access-token')
-			.setBasePath(API_PREFIX)
 			.build();
 
 		const document = SwaggerModule.createDocument(app, config);
