@@ -24,8 +24,7 @@ async function bootstrap() {
 	const API_PREFIX = configService.get('API_PREFIX', 'api');
 
 	if (isProduction) {
-		// TODO: Wait for https://github.com/nestjs/nest/pull/14121
-		// app.useLogger(new ConsoleLogger({ json: true }));
+		app.useLogger(new ConsoleLogger({ json: true }));
 	}
 
 	app.enableCors();
