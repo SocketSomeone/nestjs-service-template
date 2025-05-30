@@ -71,7 +71,7 @@
 		"@swc/core": "^1.11.29",
 		"@swc/jest": "^0.2.38",
 		"@types/jest": "29.5.14",
-		"@types/node": "22.15.24",
+		"@types/node": "22.15.28",
 		"eslint": "^9.27.0",
 		"eslint-config-prettier": "10.1.5",
 		"eslint-plugin-import": "^2.31.0",
