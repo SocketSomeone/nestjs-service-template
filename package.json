@@ -70,7 +70,7 @@
 		"@swc/cli": "^0.7.7",
 		"@swc/core": "^1.12.1",
 		"@swc/jest": "^0.2.38",
-		"@types/jest": "29.5.14",
+		"@types/jest": "30.0.0",
 		"@types/node": "24.0.1",
 		"eslint": "^9.29.0",
 		"eslint-config-prettier": "10.1.5",
