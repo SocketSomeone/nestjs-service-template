@@ -111,7 +111,7 @@ jobs:
 
   dependency-review:
     needs: check-ghas
-    if: needs.check-ghas.outputs.ghas_enabled == 'true' && github.event == 'pull_request'
+    if: needs.check-ghas.outputs.ghas_enabled == 'true' && github.event_name == 'pull_request'
     name: Dependency Review
     permissions:
       contents: read
