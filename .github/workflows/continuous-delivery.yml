@@ -107,7 +107,7 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
         uses: aquasecurity/trivy-action@0.32.0
         with:
-          image-ref: ${{ env.REGISTRY }}/${{ env.ORGANIZATION_LC }}/${{ env.SERVICE_LC }}:${{ github.sha }}
+          image-ref: ${{ steps.meta.outputs.version }}
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
