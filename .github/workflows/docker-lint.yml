@@ -1,0 +1,28 @@
+name: Docker Lint
+on:
+  push:
+    paths:
+      - .github/workflows/docker-lint.yml
+      - Dockerfile
+      - .dockerignore
+  pull_request:
+    paths:
+      - .github/workflows/docker-lint.yml
+      - Dockerfile
+      - .dockerignore
+
+permissions:
+  contents: read
+
+jobs:
+  dockerfile-lint:
+    name: Lint Dockerfile
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          file: Dockerfile
