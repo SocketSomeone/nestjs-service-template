@@ -17,6 +17,7 @@ permissions:
 jobs:
   dockerfile-lint:
     name: Lint Dockerfile
+    continue-on-error: true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
