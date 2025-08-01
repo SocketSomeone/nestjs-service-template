@@ -40,8 +40,7 @@ COPY --from=builder /sources/dist ./dist
 
 ENV NODE_ENV=production
 
-RUN yarn install --frozen-lockfile --production && \
-	yarn cache clean --force
+RUN yarn install --frozen-lockfile --production
 
 
 HEALTHCHECK --interval=10s --timeout=4s --retries=5 --start-period=10s \
