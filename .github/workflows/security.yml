@@ -18,9 +18,7 @@ jobs:
       contents: read
       security-events: write
       checks: read
-      id-token: read
       pull-requests: read
-
     runs-on: ubuntu-latest
     outputs:
       ghas_enabled: ${{ steps.detect.outputs.ghas_enabled }}
