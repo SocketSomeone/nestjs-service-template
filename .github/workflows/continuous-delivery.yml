@@ -104,12 +104,12 @@ jobs:
             ENVIRONMENT=${{ steps.environment.outputs.name }}
 
       - name: Run Trivy vulnerability scanner
-        if: ${{ github.event_name == 'pull_request' }}
+        if: ${{ github.event_name != 'pull_request' }}
         uses: aquasecurity/trivy-action@0.32.0
         with:
-          image-ref: ${{ steps.meta.outputs.version }}
+          image-ref: ${{ env.REGISTRY }}/${{ env.ORGANIZATION_LC }}/${{ env.SERVICE_LC }}:${{ steps.meta.outputs.version }}
           format: 'table'
-          exit-code: '1'
+          exit-code: 1
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'

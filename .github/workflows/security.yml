@@ -144,7 +144,7 @@ jobs:
           scan-type: 'fs'
           format: ${{ needs.check-ghas.outputs.ghas_enabled == 'true' && 'sarif' || 'table' }}
           output: ${{ needs.check-ghas.outputs.ghas_enabled == 'true' && 'trivy-results.sarif' || '' }}
-          severity: 'CRITICAL,HIGH'
+          scan-ref: '.'
           ignore-unfixed: true
 
       - name: Upload Trivy scan results to GitHub Security tab
@@ -159,5 +159,16 @@ jobs:
         with:
           scan-type: 'config'
           hide-progress: false
-          format: 'table'
+          format: table
+          skip-setup-trivy: true
+
+      - name: Fail build on High/Criticial Vulnerabilities
+        uses: aquasecurity/trivy-action@0.32.0
+        with:
+          scan-type: "fs"
+          format: table
+          scan-ref: .
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: 1
           skip-setup-trivy: true
