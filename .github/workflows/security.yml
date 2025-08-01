@@ -27,6 +27,7 @@ jobs:
           echo "Fetching repository security settings..."
           SECURITY_JSON=$(gh api repos/${{ github.repository }} --jq '.security_and_analysis // {}')
           echo $SECURITY_JSON
+          echo $(gh api repos/${{ github.repository }})
           if [[ "$SECURITY_JSON" == "{}" ]]; then
             echo "Advanced Security not enabled."
             echo "ghas_enabled=false" >> $GITHUB_OUTPUT
