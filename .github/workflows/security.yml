@@ -14,16 +14,6 @@ jobs:
   check-ghas:
     if: github.actor != 'dependabot[bot]'
     name: Check GitHub Advanced Security
-    permissions:
-      contents: read
-      security-events: write
-      checks: read
-      pull-requests: read
-      actions: read
-      attestations: read
-      issues: read
-      repository-projects: read
-      statuses: read
     runs-on: ubuntu-latest
     outputs:
       ghas_enabled: ${{ steps.detect.outputs.ghas_enabled }}
@@ -31,138 +21,137 @@ jobs:
       - name: Check Advanced Security status
         id: detect
         run: |
-          echo "Fetching repository security settings..."
-          SECURITY_JSON=$(gh api repos/${{ github.repository }} --jq '.security_and_analysis // {}')
-          echo $SECURITY_JSON
-          echo $(gh api repos/${{ github.repository }})
-          if [[ "$SECURITY_JSON" == "{}" ]]; then
-            echo "Advanced Security not enabled."
-            echo "ghas_enabled=false" >> $GITHUB_OUTPUT
-          else
-            echo "Advanced Security settings found."
+          if [[ "${{ github.repository_visibility }}" == "public" ]]; then
             echo "ghas_enabled=true" >> $GITHUB_OUTPUT
+          else
+            ENABLED=$(gh api repos/${{ github.repository }} | jq -r '.security_and_analysis.advanced_security.status // empty')
+            if [[ "$ENABLED" == "enabled" ]]; then
+              echo "ghas_enabled=true" >> $GITHUB_OUTPUT
+            else
+              echo "ghas_enabled=false" >> $GITHUB_OUTPUT
+            fi
           fi
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-#  codeql:
-#    needs: check-ghas
-#    if: needs.check-ghas.outputs.ghas_enabled == 'true'
-#    name: CodeQL Analyze
-#    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
-#    permissions:
-#      # required for all workflows
-#      security-events: write
-#
-#      # required to fetch internal or private CodeQL packs
-#      packages: read
-#
-#      # only required for workflows in private repositories
-#      actions: read
-#      contents: read
-#    strategy:
-#      fail-fast: false
-#      matrix:
-#        include:
-#          - language: actions
-#          - language: javascript-typescript
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v4
-#
-#      - name: Initialize CodeQL
-#        uses: github/codeql-action/init@v3
-#        with:
-#          languages: ${{ matrix.language }}
-#          build-mode: ${{ matrix.build-mode }}
-#
-#      - name: Perform CodeQL Analysis
-#        uses: github/codeql-action/analyze@v3
-#        with:
-#          category: "/language:${{matrix.language}}"
-#
-#  trufflehog:
-#    needs: check-ghas
-#    name: TruffleHog Secrets Scan
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v4
-#
-#      - name: Run TruffleHog
-#        uses: trufflesecurity/trufflehog@v3.90.2
-#        with:
-#          head: ${{ github.event.pull_request.head.sha || github.sha }}
-#          extra_args: --log-level=2 --results=verified,unknown
-#
-#  cdxgen:
-#    needs: check-ghas
-#    name: CycloneDX SBOM Generation
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v4
-#
-#      - name: Install CycloneDX CLI
-#        run: npm install -g @cyclonedx/cdxgen
-#
-#      - name: Generate CycloneDX SBOM
-#        run: cdxgen -o bom.json -t nodejs --deep
-#
-#      - name: Upload CycloneDX SBOM
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: bom
-#          path: bom.json
-#
-#  dependency-review:
-#    needs: check-ghas
-#    if: needs.check-ghas.outputs.ghas_enabled == 'true' && github.event == 'pull_request'
-#    name: Dependency Review
-#    permissions:
-#      contents: read
-#      pull-requests: write
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v4
-#
-#      - name: Dependency Review
-#        uses: actions/dependency-review-action@v4
-#        with:
-#          comment-summary-in-pr: on-failure
-#          fail-on-severity: moderate
-#
-#  trivy:
-#    needs: check-ghas
-#    name: Trivy Vulnerability Scan
-#    runs-on: ubuntu-latest
-#    permissions:
-#      contents: read
-#      security-events: write
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v4
-#
-#      - name: Run Trivy vulnerability scanner in repo mode
-#        uses: aquasecurity/trivy-action@0.32.0
-#        with:
-#          scan-type: 'fs'
-#          format: ${{ needs.check-ghas.outputs.ghas_enabled == 'true' && 'sarif' || 'table' }}
-#          output: ${{ needs.check-ghas.outputs.ghas_enabled == 'true' && 'trivy-results.sarif' || '' }}
-#          severity: 'CRITICAL,HIGH'
-#
-#      - name: Upload Trivy scan results to GitHub Security tab
-#        if: needs.check-ghas.outputs.ghas_enabled == 'true'
-#        uses: github/codeql-action/upload-sarif@v3
-#        with:
-#          sarif_file: 'trivy-results.sarif'
-#          category: 'trivy'
-#
-#      - name: Run Trivy vulnerability scanner in IaC mode
-#        uses: aquasecurity/trivy-action@0.32.0
-#        with:
-#          scan-type: 'config'
-#          hide-progress: false
-#          format: 'table'
-#          skip-setup-trivy: true
+  codeql:
+    needs: check-ghas
+    if: needs.check-ghas.outputs.ghas_enabled == 'true'
+    name: CodeQL Analyze
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    permissions:
+      # required for all workflows
+      security-events: write
+
+      # required to fetch internal or private CodeQL packs
+      packages: read
+
+      # only required for workflows in private repositories
+      actions: read
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: actions
+          - language: javascript-typescript
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{matrix.language}}"
+
+  trufflehog:
+    needs: check-ghas
+    name: TruffleHog Secrets Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run TruffleHog
+        uses: trufflesecurity/trufflehog@v3.90.2
+        with:
+          head: ${{ github.event.pull_request.head.sha || github.sha }}
+          extra_args: --log-level=2 --results=verified,unknown
+
+  cdxgen:
+    needs: check-ghas
+    name: CycloneDX SBOM Generation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install CycloneDX CLI
+        run: npm install -g @cyclonedx/cdxgen
+
+      - name: Generate CycloneDX SBOM
+        run: cdxgen -o bom.json -t nodejs --deep
+
+      - name: Upload CycloneDX SBOM
+        uses: actions/upload-artifact@v4
+        with:
+          name: bom
+          path: bom.json
+
+  dependency-review:
+    needs: check-ghas
+    if: needs.check-ghas.outputs.ghas_enabled == 'true' && github.event == 'pull_request'
+    name: Dependency Review
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          comment-summary-in-pr: on-failure
+          fail-on-severity: moderate
+
+  trivy:
+    needs: check-ghas
+    name: Trivy Vulnerability Scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner in repo mode
+        uses: aquasecurity/trivy-action@0.32.0
+        with:
+          scan-type: 'fs'
+          format: ${{ needs.check-ghas.outputs.ghas_enabled == 'true' && 'sarif' || 'table' }}
+          output: ${{ needs.check-ghas.outputs.ghas_enabled == 'true' && 'trivy-results.sarif' || '' }}
+          severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        if: needs.check-ghas.outputs.ghas_enabled == 'true'
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
+          category: 'trivy'
+
+      - name: Run Trivy vulnerability scanner in IaC mode
+        uses: aquasecurity/trivy-action@0.32.0
+        with:
+          scan-type: 'config'
+          hide-progress: false
+          format: 'table'
+          skip-setup-trivy: true
