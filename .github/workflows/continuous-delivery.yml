@@ -109,7 +109,7 @@ jobs:
         with:
           image-ref: ${{ env.REGISTRY }}/${{ env.ORGANIZATION_LC }}/${{ env.SERVICE_LC }}:${{ steps.meta.outputs.version }}
           format: 'table'
-          exit-code: '1'
+          exit-code: 1
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
