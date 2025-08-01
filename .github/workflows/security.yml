@@ -21,18 +21,23 @@ jobs:
       - name: Check Advanced Security status
         id: detect
         run: |
+          echo "Fetching repository security settings..."
           if [[ "${{ github.repository_visibility }}" == "public" ]]; then
+            echo "Repository is public. Setting ghas_enabled=true"
             echo "ghas_enabled=true" >> $GITHUB_OUTPUT
           else
             ENABLED=$(gh api repos/${{ github.repository }} | jq -r '.security_and_analysis.advanced_security.status // empty')
+            echo "Advanced Security status: $ENABLED"
             if [[ "$ENABLED" == "enabled" ]]; then
               echo "ghas_enabled=true" >> $GITHUB_OUTPUT
+              echo "Advanced Security is enabled. Setting ghas_enabled=true"
             else
               echo "ghas_enabled=false" >> $GITHUB_OUTPUT
+              echo "Advanced Security is disabled. Setting ghas_enabled=false"
             fi
           fi
         env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   codeql:
     needs: check-ghas
