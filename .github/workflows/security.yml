@@ -4,12 +4,74 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+  schedule:
+    - cron: '39 15 * * 3'
 
 permissions:
   contents: read
 
 jobs:
+  check-ghas:
+    if: github.actor != 'dependabot[bot]'
+    name: Check GitHub Advanced Security
+    runs-on: ubuntu-latest
+    outputs:
+      ghas_enabled: ${{ steps.detect.outputs.ghas_enabled }}
+    steps:
+      - name: Check Advanced Security status
+        id: detect
+        run: |
+          if [[ "${{ github.repository_visibility }}" == "public" ]]; then
+            echo "ghas_enabled=true" >> $GITHUB_OUTPUT
+          else
+            ENABLED=$(gh api repos/${{ github.repository }} | jq -r '.security_and_analysis.advanced_security.status // empty')
+            if [[ "$ENABLED" == "enabled" ]]; then
+              echo "ghas_enabled=true" >> $GITHUB_OUTPUT
+            else
+              echo "ghas_enabled=false" >> $GITHUB_OUTPUT
+            fi
+          fi
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  codeql:
+    needs: check-ghas
+    if: needs.check-ghas.outputs.ghas_enabled == 'true'
+    name: CodeQL Analyze
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    permissions:
+      # required for all workflows
+      security-events: write
+
+      # required to fetch internal or private CodeQL packs
+      packages: read
+
+      # only required for workflows in private repositories
+      actions: read
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: actions
+          - language: javascript-typescript
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{matrix.language}}"
+
   trufflehog:
+    needs: check-ghas
     name: TruffleHog Secrets Scan
     runs-on: ubuntu-latest
     steps:
@@ -23,6 +85,7 @@ jobs:
           extra_args: --log-level=2 --results=verified,unknown
 
   cdxgen:
+    needs: check-ghas
     name: CycloneDX SBOM Generation
     runs-on: ubuntu-latest
     steps:
@@ -42,6 +105,8 @@ jobs:
           path: bom.json
 
   dependency-review:
+    needs: check-ghas
+    if: needs.check-ghas.outputs.ghas_enabled == 'true' && github.event == 'pull_request'
     name: Dependency Review
     permissions:
       contents: read
@@ -56,7 +121,9 @@ jobs:
         with:
           comment-summary-in-pr: on-failure
           fail-on-severity: moderate
+
   trivy:
+    needs: check-ghas
     name: Trivy Vulnerability Scan
     runs-on: ubuntu-latest
     permissions:
@@ -70,12 +137,12 @@ jobs:
         uses: aquasecurity/trivy-action@0.32.0
         with:
           scan-type: 'fs'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
+          format: ${{ needs.check-ghas.outputs.ghas_enabled == 'true' && 'sarif' || 'table' }}
+          output: ${{ needs.check-ghas.outputs.ghas_enabled == 'true' && 'trivy-results.sarif' || '' }}
           severity: 'CRITICAL,HIGH'
-          exit-code: 0
 
       - name: Upload Trivy scan results to GitHub Security tab
+        if: needs.check-ghas.outputs.ghas_enabled == 'true'
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: 'trivy-results.sarif'
