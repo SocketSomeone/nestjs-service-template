@@ -5,7 +5,6 @@ WORKDIR /sources
 COPY package.json yarn.lock ./
 
 RUN yarn install --frozen-lockfile
-RUN yarn cache clean
 
 COPY . .
 
@@ -24,7 +23,6 @@ COPY --from=builder /sources/dist ./dist
 ENV NODE_ENV=development
 
 RUN yarn install --frozen-lockfile
-RUN yarn cache clean
 
 EXPOSE 8080
 
@@ -42,8 +40,8 @@ COPY --from=builder /sources/dist ./dist
 
 ENV NODE_ENV=production
 
-RUN yarn install --frozen-lockfile --production
-RUN yarn cache clean
+RUN yarn install --frozen-lockfile --production && \
+	yarn cache clean --force
 
 
 HEALTHCHECK --interval=10s --timeout=4s --retries=5 --start-period=10s \

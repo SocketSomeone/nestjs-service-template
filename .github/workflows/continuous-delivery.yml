@@ -101,3 +101,16 @@ jobs:
           target: ${{ steps.environment.outputs.name }}
           build-args:
             ENVIRONMENT=${{ steps.environment.outputs.name }}
+
+      - name: Docker Scout
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: docker/scout-action@v1
+        with:
+          command: cves,recommendations,compare
+          to-latest: true
+          ignore-base: true
+          ignore-unchanged: true
+          only-fixed: true
+          only-severities: critical,high
+          write-comment: true
+          github-token: ${{ secrets.GITHUB_TOKEN }} # to be able to write the comment
