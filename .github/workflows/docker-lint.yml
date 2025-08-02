@@ -1,4 +1,4 @@
-name: Docker Lint
+name: Docker Linting
 on:
   push:
     paths:
@@ -26,5 +26,29 @@ jobs:
       - name: Lint Dockerfile
         uses: hadolint/hadolint-action@v3.1.0
         with:
-          file: Dockerfile
+          dockerfile: Dockerfile
 
+  dockerignore-lint:
+    name: Lint .dockerignore
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Lint .dockerignore
+        run: |
+          DOCKERIGNORE_FILE=".dockerignore"
+          if [ ! -f "$DOCKERIGNORE_FILE" ]; then
+             echo "$DOCKERIGNORE_FILE does not exist."
+             exit 1
+          fi
+
+          if ! grep -qE '^[^#].*' "$DOCKERIGNORE_FILE"; then
+            echo "Error: .dockerignore file is empty or only contains comments."
+            exit 1
+          fi
+
+          if ! grep -q '^.git$' "$DOCKERIGNORE_FILE"; then
+            echo "Error: .dockerignore must contain the '.git' entry."
+            exit 1
+          fi
