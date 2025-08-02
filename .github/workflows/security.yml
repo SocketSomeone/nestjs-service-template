@@ -89,26 +89,6 @@ jobs:
           head: ${{ github.event.pull_request.head.sha || github.sha }}
           extra_args: --log-level=2 --results=verified,unknown
 
-  cdxgen:
-    needs: check-ghas
-    name: CycloneDX SBOM Generation
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install CycloneDX CLI
-        run: npm install -g @cyclonedx/cdxgen
-
-      - name: Generate CycloneDX SBOM
-        run: cdxgen -o bom.json -t nodejs --deep
-
-      - name: Upload CycloneDX SBOM
-        uses: actions/upload-artifact@v4
-        with:
-          name: bom
-          path: bom.json
-
   dependency-review:
     needs: check-ghas
     if: needs.check-ghas.outputs.ghas_enabled == 'true' && github.event_name == 'pull_request'
@@ -144,7 +124,6 @@ jobs:
           scan-type: 'fs'
           format: ${{ needs.check-ghas.outputs.ghas_enabled == 'true' && 'sarif' || 'table' }}
           output: ${{ needs.check-ghas.outputs.ghas_enabled == 'true' && 'trivy-results.sarif' || '' }}
-          scan-ref: '.'
           ignore-unfixed: true
 
       - name: Upload Trivy scan results to GitHub Security tab
@@ -167,8 +146,7 @@ jobs:
         with:
           scan-type: "fs"
           format: table
-          scan-ref: .
           severity: HIGH,CRITICAL
           ignore-unfixed: true
-          exit-code: 1
           skip-setup-trivy: true
+          exit-code: 1
