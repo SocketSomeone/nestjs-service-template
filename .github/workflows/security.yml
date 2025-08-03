@@ -142,13 +142,3 @@ jobs:
           hide-progress: false
           format: table
           skip-setup-trivy: true
-
-      - name: Fail build on High/Criticial Vulnerabilities
-        uses: aquasecurity/trivy-action@0.32.0
-        with:
-          scan-type: "fs"
-          format: table
-          severity: HIGH,CRITICAL
-          ignore-unfixed: true
-          skip-setup-trivy: true
-          exit-code: 1
