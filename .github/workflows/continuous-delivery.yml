@@ -91,7 +91,7 @@ jobs:
             type=raw,value=${{steps.environment.outputs.name}}
             type=sha
 
-      - name: Build Image
+      - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
           context: .
