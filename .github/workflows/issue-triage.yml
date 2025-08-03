@@ -6,13 +6,14 @@ on:
       - opened
       - reopened
 
+permissions:
+  issues: write
+
 jobs:
   issue-created:
-    name: Add "needs triage" label
+    name: Triage Issue On Creation
     if: github.event.action == 'opened' || github.event.action == 'reopened'
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
     steps:
       - name: Add "needs triage" label
         uses: actions-cool/issues-helper@v3
@@ -23,11 +24,9 @@ jobs:
           labels: needs triage
 
   issue-labeled:
-    name: Add "needs triage" label
+    name: Triage Issue On Label
     if: github.event.action == 'labeled'
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
     steps:
       - name: Remove Triage Label
         if: contains(github.event.issue.labels.*.name, 'needs triage') && github.event.label.name == 'in progress'
