@@ -35,7 +35,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-      pull-requests: write
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout repository
