@@ -40,7 +40,10 @@ COPY --from=builder /sources/dist ./dist
 
 ENV NODE_ENV=production
 
-RUN yarn install --frozen-lockfile --production
+RUN yarn install --frozen-lockfile --production && \
+	yarn cache clean --force && \
+	rm -rf /tmp/* /var/tmp/* /var/cache/*
+
 
 HEALTHCHECK --interval=10s --timeout=4s --retries=5 --start-period=10s \
 	CMD node -e "require('http').get({host: 'localhost', port: 8080, timeout: 3000}, res => process.exit(res.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"
