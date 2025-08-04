@@ -4,6 +4,9 @@
 	"version": "1.0.0",
 	"scripts": {
 		"prebuild": "rimraf dist",
+		"prepublish:git": "npm run build",
+		"publish:git": "release-it",
+		"prepare": "husky",
 		"build": "nest build",
 		"format": "prettier --write \"src/**/*.ts\"",
 		"start": "nest start",
@@ -16,9 +19,7 @@
 		"test:watch": "jest --watch",
 		"test:cov": "jest --coverage",
 		"test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-		"test:ci": "jest --ci --passWithNoTests --coverage",
-		"prepare": "husky",
-		"publish:git": "release-it"
+		"test:ci": "jest --ci --passWithNoTests --coverage"
 	},
 	"lint-staged": {
 		"*.ts": [
