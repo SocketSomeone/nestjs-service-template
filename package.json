@@ -5,6 +5,7 @@
 	"scripts": {
 		"prebuild": "rimraf dist",
 		"prepublish:git": "npm run build",
+		"publish": "release-it",
 		"publish:git": "release-it",
 		"prepare": "husky",
 		"build": "nest build",
