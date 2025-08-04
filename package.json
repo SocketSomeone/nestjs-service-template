@@ -4,8 +4,9 @@
 	"version": "1.0.0",
 	"scripts": {
 		"prebuild": "rimraf dist",
-		"prepublish:git": "npm run build",
+		"prepublish": "npm run build",
 		"publish": "release-it",
+		"prepublish:git": "npm run build",
 		"publish:git": "release-it",
 		"prepare": "husky",
 		"build": "nest build",
