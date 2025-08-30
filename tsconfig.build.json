@@ -1,41 +1,10 @@
 {
-	"compilerOptions": {
-		"module": "commonjs",
-		"declaration": true,
-		"noImplicitAny": false,
-		"noUnusedLocals": false,
-		"resolveJsonModule": true,
-		"noUncheckedIndexedAccess": true,
-		"removeComments": true,
-		"noLib": false,
-		"emitDecoratorMetadata": true,
-		"experimentalDecorators": true,
-		"target": "ES2021",
-		"sourceMap": true,
-		"inlineSources": true,
-		"baseUrl": ".",
-		"outDir": "./dist",
-		"rootDir": "./src",
-		"skipLibCheck": true,
-		"allowSyntheticDefaultImports": true,
-		"esModuleInterop": true,
-		"forceConsistentCasingInFileNames": true,
-		"paths": {
-			"@src/*": [
-				"src/*"
-			],
-			"@common/*": [
-				"src/common/*"
-			],
-			"@shared/*": [
-				"src/shared/*"
-			]
-		}
-	},
+	"extends": "./tsconfig.build.json",
 	"include": [
-		"src/**/*"
-	],
-	"exclude": [
-		"node_modules"
+		"src/**/*",
+		"test/**/*",
+		"**/*.spec.ts",
+		"jest-e2e.config.ts",
+		"jest.config.ts"
 	]
 }
