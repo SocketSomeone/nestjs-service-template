@@ -10,7 +10,7 @@
 		"publish:git": "release-it",
 		"prepare": "husky",
 		"build": "nest build",
-		"format": "prettier --write \"src/**/*.ts\"",
+		"format": "prettier --write \"{src,apps,libs,test}/**/*.ts\"",
 		"start": "nest start",
 		"start:dev": "nest start --watch",
 		"start:debug": "nest start --debug --watch",
