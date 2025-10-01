@@ -74,7 +74,7 @@
 		"@swc/core": "^1.13.20",
 		"@swc/jest": "^0.2.39",
 		"@types/jest": "30.0.0",
-		"@types/node": "24.6.0",
+		"@types/node": "24.6.1",
 		"eslint": "^9.36.0",
 		"eslint-config-prettier": "10.1.8",
 		"eslint-plugin-import": "^2.32.0",
@@ -90,7 +90,7 @@
 		"ts-loader": "^9.5.4",
 		"ts-node": "10.9.2",
 		"tsconfig-paths": "^4.2.0",
-		"typescript": "5.9.2",
+		"typescript": "5.9.3",
 		"typescript-eslint": "^8.45.0"
 	}
 }
