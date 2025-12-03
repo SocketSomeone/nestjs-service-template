@@ -34,6 +34,7 @@ export default tseslint.config(
 			'@typescript-eslint/no-unsafe-argument': 'off',
 			'@typescript-eslint/no-unsafe-return': 'off',
 			'@typescript-eslint/no-unused-expressions': 'off',
+			'@typescript-eslint/no-namespace': 'off',
 			'@typescript-eslint/no-require-imports': 'off',
 			'@typescript-eslint/no-unused-vars': 'off',
 			'@typescript-eslint/no-misused-promises': [

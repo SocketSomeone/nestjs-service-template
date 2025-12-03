@@ -2,6 +2,7 @@
 	"name": "nestjs-service-template",
 	"description": "📜 My template for creating NestJS Services",
 	"version": "1.0.0",
+	"type": "commonjs",
 	"scripts": {
 		"prebuild": "rimraf dist",
 		"prepublish": "npm run build",
