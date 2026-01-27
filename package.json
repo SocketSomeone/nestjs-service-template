@@ -80,7 +80,7 @@
 		"eslint-config-prettier": "10.1.8",
 		"eslint-plugin-import": "^2.32.0",
 		"eslint-plugin-prettier": "5.5.5",
-		"globals": "^17.1.0",
+		"globals": "^17.2.0",
 		"husky": "9.1.7",
 		"jest": "30.2.0",
 		"lint-staged": "16.2.7",
@@ -92,6 +92,6 @@
 		"ts-node": "10.9.2",
 		"tsconfig-paths": "^4.2.0",
 		"typescript": "5.9.3",
-		"typescript-eslint": "^8.53.1"
+		"typescript-eslint": "^8.54.0"
 	}
 }
