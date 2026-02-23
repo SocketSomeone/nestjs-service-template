@@ -72,7 +72,7 @@
 		"@nestjs/testing": "^11.1.14",
 		"@release-it/conventional-changelog": "^10.0.5",
 		"@swc/cli": "^0.8.0",
-		"@swc/core": "^1.15.11",
+		"@swc/core": "^1.15.13",
 		"@swc/jest": "^0.2.39",
 		"@types/jest": "30.0.0",
 		"@types/node": "25.3.0",
