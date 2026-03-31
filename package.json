@@ -67,8 +67,8 @@
 		"@commitlint/config-angular": "20.5.0",
 		"@eslint/eslintrc": "^3.3.5",
 		"@eslint/js": "^10.0.1",
-		"@nestjs/cli": "^11.0.16",
-		"@nestjs/schematics": "^11.0.9",
+		"@nestjs/cli": "^11.0.17",
+		"@nestjs/schematics": "^11.0.10",
 		"@nestjs/testing": "^11.1.17",
 		"@release-it/conventional-changelog": "^10.0.6",
 		"@swc/cli": "^0.8.0",
@@ -92,6 +92,6 @@
 		"ts-node": "10.9.2",
 		"tsconfig-paths": "^4.2.0",
 		"typescript": "6.0.2",
-		"typescript-eslint": "^8.57.2"
+		"typescript-eslint": "^8.58.0"
 	}
 }
