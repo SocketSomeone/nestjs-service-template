@@ -72,11 +72,11 @@
 		"@nestjs/testing": "^11.1.19",
 		"@release-it/conventional-changelog": "^10.0.6",
 		"@swc/cli": "^0.8.1",
-		"@swc/core": "^1.15.26",
+		"@swc/core": "^1.15.30",
 		"@swc/jest": "^0.2.39",
 		"@types/jest": "30.0.0",
 		"@types/node": "25.6.0",
-		"eslint": "^10.2.0",
+		"eslint": "^10.2.1",
 		"eslint-config-prettier": "10.1.8",
 		"eslint-plugin-import": "^2.32.0",
 		"eslint-plugin-prettier": "5.5.5",
@@ -92,6 +92,6 @@
 		"ts-node": "10.9.2",
 		"tsconfig-paths": "^4.2.0",
 		"typescript": "6.0.3",
-		"typescript-eslint": "^8.58.2"
+		"typescript-eslint": "^8.59.0"
 	}
 }
