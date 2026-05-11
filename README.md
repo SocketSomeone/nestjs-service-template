@@ -21,14 +21,14 @@ This is a template for creating a new services in NestJS.
 ## Usage
 1. Click the "Use this template" button to create a new repository from this template.
 2. Clone the new repository to your local machine.
-3. Run `yarn install` to install dependencies.
+3. Run `npm install` to install dependencies.
 4. Replace name, description, and other fields in `package.json` with your own.
 5. Replace the contents of this file with your own.
 6. Replace name of package at github actions workflow file
 
 ## Scripts
-* `yarn build` - Compile TypeScript to JavaScript.
-* `yarn start` - Run the service.
-* `yarn start:dev` - Run the service in development mode.
-* `yarn lint` - Lint TypeScript files.
-* `yarn test` - Run tests.
+* `npm run build` - Compile TypeScript to JavaScript.
+* `npm run start` - Run the service.
+* `npm run start:dev` - Run the service in development mode.
+* `npm run lint` - Lint TypeScript files.
+* `npm run test` - Run tests.
