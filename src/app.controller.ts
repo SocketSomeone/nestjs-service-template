@@ -3,8 +3,8 @@ import { ApiOperation } from '@nestjs/swagger';
 
 @Controller()
 export class AppController {
-	@Get('health')
 	@ApiOperation({ summary: 'Health check' })
+	@Get('health')
 	public health(): string {
 		return 'OK';
 	}
