@@ -5,8 +5,10 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import * as path from 'node:path';
 
-import { name, description, version } from '../package.json';
-import { AppModule } from './app.module';
+import packageJson from '../package.json' with { type: 'json' };
+import { AppModule } from './app.module.js';
+
+const { name, description, version } = packageJson;
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
