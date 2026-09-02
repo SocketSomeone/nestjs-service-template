@@ -1,5 +1,8 @@
 .idea
 .git
+node_modules
+dist
+coverage
 .vscode
 .github
 docs

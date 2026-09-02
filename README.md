@@ -4,8 +4,8 @@ This is a template for creating a new services in NestJS.
 
 ## Features
 * [TypeScript](https://www.typescriptlang.org/)
-* [Jest](https://jestjs.io/)
-* [ESLint](https://eslint.org/)
+* [Vitest](https://vitest.dev/)
+* [Oxlint](https://oxc.rs/docs/guide/usage/linter.html)
 * [Prettier](https://prettier.io/)
 * GitHub Actions
 * [Dependabot](https://dependabot.com/)
@@ -16,7 +16,7 @@ This is a template for creating a new services in NestJS.
 * [Semantic Versioning](https://semver.org/)
 * [Husky](https://typicode.github.io/husky/#/)
 * Lint Staged
-* SWC (Super-fast JavaScript/TypeScript compiler)
+* Native ESM with the TypeScript compiler and tsx
 
 ## Usage
 1. Click the "Use this template" button to create a new repository from this template.
@@ -28,6 +28,7 @@ This is a template for creating a new services in NestJS.
 
 ## Scripts
 * `npm run build` - Compile TypeScript to JavaScript.
+* `npm run typecheck` - Type-check the application without emitting files.
 * `npm run start` - Run the service.
 * `npm run start:dev` - Run the service in development mode.
 * `npm run lint` - Lint TypeScript files.

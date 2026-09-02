@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
-		"module": "commonjs",
-		"declaration": true,
+		"module": "Node20",
+		"moduleResolution": "Node16",
 		"noImplicitAny": false,
 		"noUnusedLocals": false,
 		"resolveJsonModule": true,
@@ -10,19 +10,16 @@
 		"noLib": false,
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
-		"target": "ESNext",
+		"target": "ES2023",
 		"sourceMap": true,
 		"inlineSources": true,
-		"rootDir": "./src",
-		"outDir": "./dist",
-		"sourceRoot": "/",
 		"skipLibCheck": true,
 		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"strictPropertyInitialization": false,
-		"strictNullChecks": false,
-		"useDefineForClassFields": true,
+		"strictNullChecks": true,
+		"useDefineForClassFields": false,
 		"paths": {
 			"@src/*": [
 				"./src/*"
@@ -36,10 +33,10 @@
 		},
 		"types": [
 			"node",
-			"jest"
-		]
+			"vitest/globals"
+		],
+		"noEmit": true
 	},
-	"exclude": [
-		"node_modules"
-	]
+	"include": ["src/**/*.ts", "test/**/*.ts", "vitest.config.mts"],
+	"exclude": ["node_modules", "dist", "coverage"]
 }

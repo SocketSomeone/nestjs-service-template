@@ -2,8 +2,8 @@ FROM node:26-alpine AS builder
 
 WORKDIR /sources
 
-COPY package.json package-lock.json .swcrc nest-cli.json tsconfig.build.json ./
-RUN npm ci
+COPY package.json package-lock.json ./
+RUN npm ci --ignore-scripts
 
 COPY . .
 
