@@ -48,12 +48,12 @@
 		"Alexey Filippov <socket.someone@gmail.com>"
 	],
 	"dependencies": {
-		"@nestjs/axios": "^12.0.0",
-		"@nestjs/common": "12.0.1",
+		"@nestjs/axios": "^12.0.1",
+		"@nestjs/common": "12.0.2",
 		"@nestjs/config": "^12.0.0",
-		"@nestjs/core": "12.0.1",
-		"@nestjs/jwt": "^12.0.1",
-		"@nestjs/platform-express": "^12.0.1",
+		"@nestjs/core": "12.0.2",
+		"@nestjs/jwt": "^12.0.2",
+		"@nestjs/platform-express": "^12.0.2",
 		"@nestjs/swagger": "^12.0.1",
 		"axios": "^1.20.0",
 		"class-transformer": "^0.5.1",
